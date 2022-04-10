@@ -5,6 +5,14 @@ const todoInput = document.getElementById('input-field');
 const addTodoBtn = document.getElementById('addTodoBtn');
 const messageElement = document.getElementById('message');
 const totoLists = document.getElementById('lists');
+
+// get todo form local storage 
+const getTodosFromLocalStorage = () => {
+    return localStorage.getItem("mytodos")
+        ? JSON.parse(localStorage.getItem("mytodos"))
+        : [];
+};
+
 // show message 
 const showMessage = (text, status) => {
     messageElement.textContent = text;
@@ -39,6 +47,10 @@ const addTodo = (event) => {
     // show message 
     showMessage("Todo Is Added", "success")
 
+    // add to local sotorage 
+    const todos = getTodosFromLocalStorage();
+    todos.push({ todoUniqueId, todoValue });
+    localStorage.setItem('myTodos', JSON.stringify(todos))
     // clear input value 
     todoInput.value = '';
 }
