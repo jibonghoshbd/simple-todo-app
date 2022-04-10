@@ -6,12 +6,12 @@ const addTodoBtn = document.getElementById('addTodoBtn');
 const messageElement = document.getElementById('message');
 const totoLists = document.getElementById('lists');
 // show message 
-const showMessage = () => {
-    messageElement.textContent = `Todo is added`
-    messageElement.classList.add('bg-success')
+const showMessage = (text, status) => {
+    messageElement.textContent = text;
+    messageElement.classList.add(`bg-${status}`)
     setTimeout(() => {
         messageElement.textContent = '';
-        messageElement.classList.remove('bg-success')
+        messageElement.classList.remove(`bg-${status}`)
     }, 2000);
 }
 
@@ -37,7 +37,7 @@ const addTodo = (event) => {
     const todoUniqueId = Date.now().toString();
     createTodo(todoUniqueId, todoValue)
     // show message 
-    showMessage()
+    showMessage("Todo Is Added", "success")
 
     // clear input value 
     todoInput.value = '';
