@@ -8,8 +8,12 @@ const totoLists = document.getElementById('lists');
 
 const deleteTodo = (event) => {
     const selectedTodo = event.target.parentElement.parentElement.parentElement;
-
     totoLists.removeChild(selectedTodo);
+    showMessage("todo is deleted", "danger");
+
+    let todos = getTodosFromLocalStorage();
+    todos = todos.filter((todo) => todo.todoId !== selectedTodo.id);
+    localStorage.setItem("mytodos", JSON.stringify(todos));
 }
 
 // get todo form local storage 
@@ -30,9 +34,9 @@ const showMessage = (text, status) => {
 }
 
 // create todo 
-const createTodo = (todoUniqueId, todoValue) => {
+const createTodo = (todoId, todoValue) => {
     const todoElement = document.createElement('li');
-    todoElement.id = todoUniqueId;
+    todoElement.id = todoId;
     todoElement.classList.add('list-items')
     todoElement.innerHTML = `
     <span>${todoValue}</span>
@@ -50,20 +54,27 @@ const addTodo = (event) => {
     const todoValue = todoInput.value;
 
     // unique id 
-    const todoUniqueId = Date.now().toString();
-    createTodo(todoUniqueId, todoValue)
+    const todoId = Date.now().toString();
+    createTodo(todoId, todoValue)
     // show message 
     showMessage("Todo Is Added", "success")
 
     // add to local sotorage 
     const todos = getTodosFromLocalStorage();
-    todos.push({ todoUniqueId, todoValue });
-    localStorage.setItem('myTodos', JSON.stringify(todos))
+    todos.push({ todoId, todoValue });
+    localStorage.setItem('mytodos', JSON.stringify(todos))
     // clear input value 
     todoInput.value = '';
 }
+// loadTodos
+const loadTodos = () => {
+    const todos = getTodosFromLocalStorage();
+    todos.map((todo) => createTodo(todo.todoId, todo.todoValue));
+};
 
 // add event listener 
 todoForm.addEventListener('submit', addTodo);
+window.addEventListener("DOMContentLoaded", loadTodos);
+
 
 
